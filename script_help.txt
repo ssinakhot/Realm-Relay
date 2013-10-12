@@ -1,0 +1,501 @@
+Realm Relay v1.0.0 Script Documentation
+designed for ROTMG v17.2
+________________________________________________________________
+:INDEX
+- General script info - GENERAL
+- Event handler info - EVENTS
+- Event function info - FUNCTIONS
+- Object data info - OBJECTS
+- Packet data info - PACKETS
+________________________________________________________________
+:GENERAL
+- Realm Relay hacks are coded with JavaScript.
+- A new instance of each script is created for each relay user.
+- All information is lost when the user disconnects from the relay.
+- A few variable names may unusual, because they were obfuscated in the decompiled rotmg code.
+- Some variable names in packets or data objects may change later.
+- Not all RotMG packets are included because more insight into the rotmg code is necessary.
+________________________________________________________________
+:EVENTS
+- All event handlers have one or more parameters.
+- The first parameter is always the event object.
+- There are two types of event objects: ScheduledScriptEvent and PacketScriptEvent
+- The event object is necessary to perform many tasks (see FUNCTIONS).
+
+onEnable(ScheduledScriptEvent)
+	fired when there is a new user connected to the relay
+
+onConnect(ScheduledScriptEvent)
+	fired when the relay connects to the remote host successfully
+
+onConnectFail(ScheduledScriptEvent)
+	fired when the relay failed to connect to the remote host
+
+onDisconnect(ScheduledScriptEvent)
+	fired when the relay disconnects from the remote host
+
+onClientPacket(PacketScriptEvent)
+	fired when the relay recieves a packet from the client
+
+onServerPacket(PacketScriptEvent)
+	fired when the relay recieves a packet from the server
+________________________________________________________________
+:FUNCTIONS
+- All Realm Relay default functions are defined in event objects.
+
+boolean connect(int gameId)
+	- asynchronously (not blocking the current thread) tries a connection attempt
+	- uses the gameId to determine what remote host:port to connect to
+	- if gameId is not known, uses the remote host:port in the settings.properties file
+	- returns true if the relay was not already connected to a remote host
+
+BitmapData createBitmapData()
+	- creates a BitmapData object
+
+Item createItem()
+	- creates an Item object
+	
+Location createLocation()
+	- creates a Location object
+	
+LocationRecord createLocationRecord()
+	- creates a LocationRecord object
+	
+ObjectData createObjectData()
+	- creates an ObjectData object
+	
+Packet createPacket(byte id)
+	- using the packet id provided, creates the correct type of Packet
+	
+SlotObject createSlotObject()
+	- creates a SlotObject object
+
+StatData createStatData()
+	- creates a StatData object
+	
+Status createStatus()
+	- creates a Status object
+	
+Tile createTile()
+	- creates a Tile object
+	
+void disconnect()
+	- disconnects the relay from the remote host
+
+void echo(String message)
+	- echo a message to the console
+	
+string getRemoteHost()
+	- gets the current remote host name
+	
+int getRemotePort()
+	- gets the current remote host port
+	
+boolean isConnected()
+	- returns true if the relay is connected to a remote host
+	
+void kickUser()
+	- disconnects from remote host and disconnects the relay user
+
+void scheduleEvent(double seconds, string eventMethod, object... arguments)
+	- schedules eventMethod to be fired after seconds have passed
+	- arguments are passed, but the first argument of the eventMethod is always the event object
+	
+void sendToClient(Packet packet)
+	- sends the packet to the client
+	
+void sendToServer(Packet packet)
+	- sends the packet to the server
+	
+void setGameIdSocketAddress(int gameId, string host, int port)
+	- configures realm relay to correctly connect to the host:port when using the connect(gameId) function
+	
+!!! The following functions are only available in a PacketScriptEvent !!!
+
+void cancel()
+	- cancels the event, causing the packet to not be sent
+	
+Packet getPacket()
+	- gets the Packet object involved in the event
+	
+boolean isCancelled()
+	- returns true if the event has been cancelled
+________________________________________________________________
+:OBJECTS
+
+BitmapData
+	int width
+	int height;
+	byte[] bytes;
+	
+Item
+	int item
+	int slotType
+	boolean tradeable
+	boolean included
+	
+Location
+	float x
+	float y
+	float distanceSquaredTo(Location location)
+	float distanceTo(Location location)
+	
+LocationRecord
+	int time
+	float x
+	float y
+	float distanceSquaredTo(Location location)
+	float distanceTo(Location location)
+	
+ObjectData
+	short objectType
+	Status status
+	
+Packet
+	byte id()
+	string toString()
+	
+SlotObject
+	int objectId
+	int slotId
+	int objectType
+	
+StatData
+	int obf0
+	int obf1
+	string obf2
+	
+Status
+	int objectId
+	Location pos
+	StatData[] data
+	
+Tile
+	short x
+	short y
+	int type
+________________________________________________________________
+:PACKETS
+- All packet objects implement the id() function
+
+AcceptTradePacket 63
+	boolean[] myOffer
+	boolean[] yourOffer
+	
+AccountListPacket 81
+	int accountListId
+	string[] accountIds
+	
+AllyShootPacket 92
+	int bulletId
+	int ownerId
+	short containerId
+	float angle
+	
+AOEAckPacket 37
+	int time
+	Location position
+	
+AOEPacket 24
+	Location pos
+	float radius
+	int damage
+	int effect
+	float duration
+	int origType
+	
+BuyPacket 40
+	int objectId
+	
+BuyResultPacket 16
+	int result
+	string resultString
+	
+CancelTradePacket 25
+
+ChangeGuildRankPacket 36
+	string name
+	int guildRank
+	
+ChangeTradePacket 12
+	boolean[] offer
+	
+CheckCreditsPacket 33
+
+ChooseNamePacket 57
+	string name
+	
+ClientStatPacket 8
+	string name
+	int value
+	
+Create_SuccessPacket 47
+	int objectId
+	int charId
+	
+CreateGuildPacket 23
+	string name
+	
+CreatePacket 49
+	int classType
+	int skinType
+	
+DamagePacket 21
+	int targetId
+	int[] effects
+	int damageAmount
+	boolean kill
+	int bulletId
+	int objectId
+	
+DeathPacket 34
+	string accountId
+	int charId
+	string killedBy
+	int obf0
+	int obf1
+	
+EditAccountListPacket 31
+	int accountListId
+	boolean add
+	int objectId
+	
+EnemyHitPacket 58
+	int time
+	int bulletId
+	int targetId
+	boolean kill
+	
+EscapePacket 69
+
+FailurePacket 0
+	int errorId
+	string errorDescription
+	
+Global_NotificationPacket 45
+	int type
+	string text
+	
+GoToAckPacket 61
+	int time
+	
+GoToPacket 14
+	int objectId
+	Location pos
+	
+GroundDamagePacket 52
+	int time
+	Location position
+	
+GuildInvitePacket 39
+	string name
+	
+GuildRemovePacket 19
+	string name
+	
+HelloPacket 51
+	string buildVersion
+	int gameId
+	string guid
+	string password
+	string secret
+	int keyTime
+	byte[] key
+	byte[] obf0
+	string obf1
+	string obf2
+	string obf3
+	string obf4
+	string obf5
+	
+InvDropPacket 38
+	SlotObject slotObject
+	
+InvitedToGuildPacket 85
+	string name
+	string guildName
+	
+InvResultPacket 53
+	int result
+	
+InvSwapPacket 6
+	int time
+	Location position
+	SlotObject slotObject1
+	SlotObject slotObject2
+	
+JoinGuildPacket 27
+	string guildName
+	
+LoadPacket 17
+	int charId
+	boolean isFromArena
+	
+MapInfoPacket 76
+	int width
+	int height
+	string name
+	string obf0
+	int obf1
+	int fp
+	int background
+	boolean allowPlayerTeleport
+	boolean showDisplays
+	string[] clientXML
+	string[] extraXML
+	
+MovePacket 74
+	int tickId
+	int time
+	Location newPosition
+	LocationRecord[] records
+	
+NameResultPacket 22
+	boolean success
+	string errorText
+	
+New_TickPacket 50
+	int tickId
+	int tickTime
+	Status[] statuses
+	
+NotificationPacket 91
+	int objectId
+	string message
+	int color
+	
+OtherHitPacket 89
+	int time
+	int bulletId
+	int objectId
+	int targetId
+	
+PicPacket 5
+	BitmapData bitmapData
+	
+PingPacket 1
+	int serial
+	
+PlayerHitPacket 26
+	int bulletId
+	int objectId
+	
+PlayerShootPacket 90
+	int time
+	int bulletId
+	int containerType
+	Location startingPos
+	float angle
+	
+PlayerTextPacket 80
+	string text
+	
+PlaySoundPacket 60
+	int ownerId
+	int soundId
+	
+PongPacket 9
+	int serial
+	int time
+	
+QuestObjIdPacket 48
+	int objectId
+	
+ReconnectPacket 15
+	string name
+	string host
+	int port
+	int gameId
+	int keyTime
+	boolean isFromArena
+	byte[] key
+	
+RequestTradePacket 4
+	string name
+	
+ReskinPacket 56
+	int skinID
+	
+SetConditionPacket 7
+	int conditionEffect
+	float conditionDuration
+	
+Shoot2Packet 59
+	int bulletId
+	int ownerId
+	int containerId
+	Location startingPos
+	float angle
+	short damage
+	
+ShootAckPacket 11
+	int time
+	
+ShootPacket 10
+	int bulletId
+	int ownerId
+	int bulletType
+	Location startingPos
+	float angle
+	short damage
+	int numShots
+	float angleInc
+	
+Show_EffectPacket 83
+	int effectType
+	int targetObjectId
+	Location pos1
+	Location pos2
+	int color
+	
+SquareHitPacket 41
+	int time
+	int bulletId
+	int objectId
+	
+TeleportPacket 67
+	int objectId
+	
+TextPacket 20
+	string name
+	int objectId
+	int numStars
+	int bubbleTime
+	string recipient
+	string text
+	string cleanText
+	
+TradeAcceptedPacket 86
+	boolean[] myOffer
+	boolean[] yourOffer
+	
+TradeChangedPacket 65
+	boolean[] offer
+	
+TradeDonePacket 13
+	int code
+	string description
+	
+TradeRequestedPacket 78
+	string name
+	
+TradeStartPacket 77
+	Item[] myItems
+	string yourName
+	Item[] yourItems
+	
+UpdateAckPacket 42
+
+UpdatePacket 66
+	Tile[] tiles
+	ObjectData[] newObjs
+	int[] drops
+	
+UseItemPacket 35
+	int time
+	SlotObject slotObject
+	Location itemUsePos
+	int useType
+	
+UsePortalPacket 55
+	int objectId
