@@ -181,6 +181,12 @@ public abstract class Packet implements IData {
 		return baos.toByteArray();
 	}
 	
+	public String getName() {
+		String simpleName = this.getClass().getSimpleName();
+		simpleName = simpleName.substring(0, simpleName.indexOf("Packet"));
+		return simpleName.toUpperCase();
+	}
+	
 	/**
 	 * Returns the byte id of the packet
 	 * @return
@@ -189,7 +195,7 @@ public abstract class Packet implements IData {
 	
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName() + this.id();
+		return this.getName();
 	}
 
 }
