@@ -9,15 +9,8 @@ import realmrelay.packets.Packet;
 
 public class CreatePacket extends Packet {
 	
-	public static final byte ID = 49;
-	
 	public int classType;
 	public int skinType;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

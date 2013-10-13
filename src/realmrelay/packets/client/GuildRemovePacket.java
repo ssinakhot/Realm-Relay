@@ -9,14 +9,7 @@ import realmrelay.packets.Packet;
 
 public class GuildRemovePacket extends Packet {
 	
-	public static final byte ID = 19;
-	
 	public String name;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

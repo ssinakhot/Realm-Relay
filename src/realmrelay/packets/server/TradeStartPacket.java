@@ -11,16 +11,9 @@ import realmrelay.packets.Packet;
 
 public class TradeStartPacket extends Packet {
 	
-	public static final byte ID = 77;
-	
 	public Item[] myItems = new Item[0];
 	public String yourName;
 	public Item[] yourItems = new Item[0];
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

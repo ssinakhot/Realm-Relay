@@ -8,8 +8,6 @@ import realmrelay.packets.Packet;
 
 
 public class UpdateAckPacket extends Packet {
-	
-	public static final int ID = 42;
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {
@@ -17,11 +15,6 @@ public class UpdateAckPacket extends Packet {
 
 	@Override
 	public void writeToOutput(DataOutput out) throws IOException {
-	}
-
-	@Override
-	public byte id() {
-		return ID;
 	}
 
 }

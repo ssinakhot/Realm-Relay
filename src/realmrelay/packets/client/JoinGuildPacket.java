@@ -9,14 +9,7 @@ import realmrelay.packets.Packet;
 
 public class JoinGuildPacket extends Packet {
 	
-	public static final byte ID = 27;
-	
 	public String guildName;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

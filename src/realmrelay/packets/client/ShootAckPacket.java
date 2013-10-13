@@ -9,14 +9,7 @@ import realmrelay.packets.Packet;
 
 public class ShootAckPacket extends Packet {
 	
-	public static final byte ID = 11;
-	
 	public int time;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

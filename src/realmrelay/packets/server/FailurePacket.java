@@ -9,15 +9,8 @@ import realmrelay.packets.Packet;
 
 public class FailurePacket extends Packet {
 	
-	public static final byte ID = 0;
-	
 	public int errorId;
 	public String errorDescription;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

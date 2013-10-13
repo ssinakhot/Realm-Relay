@@ -9,8 +9,6 @@ import realmrelay.packets.Packet;
 
 public class MapInfoPacket extends Packet {
 	
-	public static final byte ID = 76;
-	
 	public int width;
 	public int height;
 	public String name;
@@ -22,11 +20,6 @@ public class MapInfoPacket extends Packet {
 	public boolean showDisplays;
 	public String[] clientXML = new String[0];
 	public String[] extraXML = new String[0];
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

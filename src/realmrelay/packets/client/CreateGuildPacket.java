@@ -9,14 +9,7 @@ import realmrelay.packets.Packet;
 
 public class CreateGuildPacket extends Packet {
 	
-	public static final byte ID = 23;
-	
 	public String name;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

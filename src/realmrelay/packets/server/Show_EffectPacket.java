@@ -11,18 +11,11 @@ import realmrelay.packets.Packet;
 
 public class Show_EffectPacket extends Packet {
 	
-	public static final byte ID = 83;
-	
 	public int effectType;
 	public int targetObjectId;
 	public Location pos1 = new Location();
 	public Location pos2 = new Location();
 	public int color;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

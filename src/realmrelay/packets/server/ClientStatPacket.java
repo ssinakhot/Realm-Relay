@@ -9,15 +9,8 @@ import realmrelay.packets.Packet;
 
 public class ClientStatPacket extends Packet {
 	
-	public static final byte ID = 8;
-	
 	public String name;
 	public int value;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

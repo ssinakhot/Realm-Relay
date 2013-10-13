@@ -11,19 +11,12 @@ import realmrelay.packets.Packet;
 
 public class AOEPacket extends Packet {
 	
-	public static final byte ID = 24;
-	
 	public Location pos = new Location();
 	public float radius;
 	public int damage;
 	public int effect;
 	public float duration;
 	public int origType;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

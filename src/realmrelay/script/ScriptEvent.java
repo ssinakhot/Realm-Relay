@@ -98,7 +98,7 @@ public abstract class ScriptEvent {
 	 * @param id
 	 * @return
 	 */
-	public Packet createPacket(byte id) {
+	public Packet createPacket(byte id) throws Exception {
 		return Packet.create(id);
 	}
 	

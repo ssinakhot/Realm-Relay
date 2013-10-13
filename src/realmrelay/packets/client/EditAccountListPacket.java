@@ -9,16 +9,9 @@ import realmrelay.packets.Packet;
 
 public class EditAccountListPacket extends Packet {
 	
-	public static final byte ID = 31;
-	
 	public int accountListId;
 	public boolean add;
 	public int objectId;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

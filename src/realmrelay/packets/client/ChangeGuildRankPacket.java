@@ -8,16 +8,9 @@ import realmrelay.packets.Packet;
 
 
 public class ChangeGuildRankPacket extends Packet {
-	
-	public static final byte ID = 36;
-	
+
 	public String name;
 	public int guildRank;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

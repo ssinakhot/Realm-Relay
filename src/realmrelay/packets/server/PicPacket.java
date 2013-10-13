@@ -11,14 +11,7 @@ import realmrelay.packets.Packet;
 
 public class PicPacket extends Packet {
 	
-	public static final byte ID = 5;
-	
 	public BitmapData bitmapData = new BitmapData();
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

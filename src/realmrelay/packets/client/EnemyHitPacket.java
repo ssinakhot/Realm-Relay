@@ -9,17 +9,10 @@ import realmrelay.packets.Packet;
 
 public class EnemyHitPacket extends Packet {
 	
-	public static final byte ID = 58;
-	
 	public int time;
 	public int bulletId;
 	public int targetId;
 	public boolean kill;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

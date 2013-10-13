@@ -9,15 +9,8 @@ import realmrelay.packets.Packet;
 
 public class TradeAcceptedPacket extends Packet {
 	
-	public static final byte ID = 86;
-	
 	public boolean[] myOffer = new boolean[0];
 	public boolean[] yourOffer = new boolean[0];
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

@@ -11,15 +11,8 @@ import realmrelay.packets.Packet;
 
 public class GoToPacket extends Packet {
 	
-	public static final byte ID = 14;
-	
 	public int objectId;
 	public Location pos = new Location();
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

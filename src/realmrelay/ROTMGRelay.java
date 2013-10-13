@@ -139,6 +139,12 @@ public final class ROTMGRelay {
 	}
 	
 	public static void main(String[] args) {
+		try {
+			GETXmlParse.parseXMLData();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Packet.init();
 		if (ROTMGRelay.instance.listenSocket.start()) {
 			new Thread(new Runnable() {
 

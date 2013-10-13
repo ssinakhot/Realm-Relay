@@ -11,16 +11,9 @@ import realmrelay.packets.Packet;
 
 public class UpdatePacket extends Packet {
 	
-	public static final byte ID = 66;
-	
 	public Tile[] tiles = new Tile[0];
 	public ObjectData[] newObjs = new ObjectData[0];
 	public int[] drops = new int[0];
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

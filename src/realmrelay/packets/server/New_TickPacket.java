@@ -11,16 +11,9 @@ import realmrelay.packets.Packet;
 
 public class New_TickPacket extends Packet {
 	
-	public static final byte ID = 50;
-	
 	public int tickId;
 	public int tickTime;
 	public Status[] statuses = new Status[0];
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

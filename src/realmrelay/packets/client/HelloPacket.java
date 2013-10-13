@@ -9,26 +9,19 @@ import realmrelay.packets.Packet;
 
 public class HelloPacket extends Packet {
 	
-	public static final byte ID = 51;
-	
 	public String buildVersion;
-  public int gameId;
-  public String guid;
-  public String password;
-  public String secret;
-  public int keyTime;
-  public byte[] key = new byte[0];
-  public byte[] obf0 = new byte[0];
-  public String obf1;
-  public String obf2;
-  public String obf3;
-  public String obf4;
-  public String obf5;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
+	public int gameId;
+	public String guid;
+	public String password;
+	public String secret;
+	public int keyTime;
+	public byte[] key = new byte[0];
+	public byte[] obf0 = new byte[0];
+	public String obf1;
+	public String obf2;
+	public String obf3;
+	public String obf4;
+	public String obf5;
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

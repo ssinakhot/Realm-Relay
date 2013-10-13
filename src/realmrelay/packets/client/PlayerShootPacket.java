@@ -10,18 +10,11 @@ import realmrelay.packets.Packet;
 
 public class PlayerShootPacket extends Packet {
 	
-	public static final byte ID = 90;
-	
 	public int time;
 	public int bulletId;
 	public int containerType;
 	public Location startingPos = new Location();
 	public float angle;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

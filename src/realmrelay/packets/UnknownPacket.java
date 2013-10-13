@@ -10,12 +10,8 @@ import java.util.List;
 
 public class UnknownPacket extends Packet {
 	
-	private final byte id;
+	private byte id;
 	private final List<Byte> bytes = new LinkedList<Byte>();
-	
-	public UnknownPacket(byte id) {
-		this.id = id;
-	}
 
 	@Override
 	public byte id() {
@@ -29,6 +25,10 @@ public class UnknownPacket extends Packet {
 				this.bytes.add(in.readByte());
 			}
 		} catch (Exception e) {}
+	}
+	
+	protected void setId(byte id) {
+		this.id = id;
 	}
 
 	@Override

@@ -9,14 +9,7 @@ import realmrelay.packets.Packet;
 
 public class TradeChangedPacket extends Packet {
 	
-	public static final byte ID = 65;
-	
 	public boolean[] offer = new boolean[0];
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

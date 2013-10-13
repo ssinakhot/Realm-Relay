@@ -9,17 +9,10 @@ import realmrelay.packets.Packet;
 
 public class AllyShootPacket extends Packet {
 	
-	public static final byte ID = 92;
-	
 	public int bulletId;
 	public int ownerId;
 	public short containerType;
 	public float angle;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

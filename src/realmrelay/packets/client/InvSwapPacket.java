@@ -11,17 +11,10 @@ import realmrelay.packets.Packet;
 
 public class InvSwapPacket extends Packet {
 	
-	public static final byte ID = 6;
-	
 	public int time;
 	public Location position = new Location();
 	public SlotObject slotObject1 = new SlotObject();
 	public SlotObject slotObject2 = new SlotObject();
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

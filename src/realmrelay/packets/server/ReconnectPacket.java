@@ -9,8 +9,6 @@ import realmrelay.packets.Packet;
 
 public class ReconnectPacket extends Packet {
 	
-	public static final byte ID = 15;
-	
 	public String name;
 	public String host;
 	public int port;
@@ -18,11 +16,6 @@ public class ReconnectPacket extends Packet {
 	public int keyTime;
 	public boolean isFromArena;
 	public byte[] key = new byte[0];
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

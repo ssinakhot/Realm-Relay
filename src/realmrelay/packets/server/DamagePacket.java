@@ -9,19 +9,12 @@ import realmrelay.packets.Packet;
 
 public class DamagePacket extends Packet {
 	
-	public static final byte ID = 21;
-	
 	public int targetId;
 	public int[] effects = new int[0];
 	public int damageAmount;
 	public boolean kill;
 	public int bulletId;
 	public int objectId;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

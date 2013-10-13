@@ -11,17 +11,10 @@ import realmrelay.packets.Packet;
 
 public class UseItemPacket extends Packet {
 	
-	public static final byte ID = 35;
-	
 	public int time;
 	public SlotObject slotObject = new SlotObject();
 	public Location itemUsePos = new Location();
 	public int useType;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

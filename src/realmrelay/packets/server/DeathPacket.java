@@ -9,18 +9,11 @@ import realmrelay.packets.Packet;
 
 public class DeathPacket extends Packet {
 	
-	public static final byte ID = 34;
-	
 	public String accountId;
 	public int charId;
 	public String killedBy;
 	public int obf0;
 	public int obf1;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {

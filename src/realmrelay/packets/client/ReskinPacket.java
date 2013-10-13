@@ -9,14 +9,7 @@ import realmrelay.packets.Packet;
 
 public class ReskinPacket extends Packet {
 	
-	public static final byte ID = 56;
-	
 	public int skinID;
-
-	@Override
-	public byte id() {
-		return ID;
-	}
 
 	@Override
 	public void parseFromInput(DataInput in) throws IOException {
