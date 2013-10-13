@@ -8,6 +8,7 @@ import java.net.Proxy;
 import java.net.Socket;
 import java.net.SocketAddress;
 
+
 import realmrelay.ROTMGRelay;
 import realmrelay.User;
 import realmrelay.data.BitmapData;
@@ -15,11 +16,11 @@ import realmrelay.data.Item;
 import realmrelay.data.Location;
 import realmrelay.data.LocationRecord;
 import realmrelay.data.ObjectData;
-import realmrelay.data.Packet;
 import realmrelay.data.SlotObject;
 import realmrelay.data.StatData;
 import realmrelay.data.Status;
 import realmrelay.data.Tile;
+import realmrelay.packets.Packet;
 
 
 public abstract class ScriptEvent {

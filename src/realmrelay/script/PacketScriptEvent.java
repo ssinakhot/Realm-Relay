@@ -1,7 +1,7 @@
 package realmrelay.script;
 
 import realmrelay.User;
-import realmrelay.data.Packet;
+import realmrelay.packets.Packet;
 
 
 public class PacketScriptEvent extends ScriptEvent {

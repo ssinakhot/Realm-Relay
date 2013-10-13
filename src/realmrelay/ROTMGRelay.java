@@ -20,8 +20,9 @@ import java.util.Properties;
 import java.util.TimeZone;
 import java.util.Vector;
 
-import realmrelay.data.Packet;
+
 import realmrelay.net.ListenSocket;
+import realmrelay.packets.Packet;
 import realmrelay.script.PacketScriptEvent;
 
 

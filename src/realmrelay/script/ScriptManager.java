@@ -14,9 +14,10 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+
 import realmrelay.ROTMGRelay;
 import realmrelay.User;
-import realmrelay.data.Packet;
+import realmrelay.packets.Packet;
 
 
 public class ScriptManager {
