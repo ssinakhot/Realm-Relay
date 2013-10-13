@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 
 
+import realmrelay.GETXmlParse;
 import realmrelay.ROTMGRelay;
 import realmrelay.User;
 import realmrelay.data.BitmapData;
@@ -132,6 +133,34 @@ public abstract class ScriptEvent {
 		ROTMGRelay.echo(message);
 	}
 	
+	public byte findPacketId(String name) {
+		Integer id = GETXmlParse.packetMap.get(name);
+		if (id == null) {
+			return -1;
+		}
+		return id.byteValue();
+	}
+	
+	public int findObjectType(String name) {
+		Integer type = GETXmlParse.objectMap.get(name);
+		if (type == null) {
+			return -1;
+		}
+		return type;
+	}
+	
+	public int findTileType(String name) {
+		Integer type = GETXmlParse.tileMap.get(name);
+		if (type == null) {
+			return -1;
+		}
+		return type;
+	}
+	
+	public Object getGlobal(String var) {
+		return ROTMGRelay.instance.getGlobal(var);
+	}
+	
 	public String getRemoteHost() {
 		return this.user.remoteSocket.getInetAddress().getHostName();
 	}
@@ -196,6 +225,10 @@ public abstract class ScriptEvent {
 	
 	public void setGameIdSocketAddress(int gameId, String host, int port) {
 		ROTMGRelay.instance.setSocketAddress(gameId, host, port);
+	}
+	
+	public void setGlobal(String var, Object value) {
+		ROTMGRelay.instance.setGlobal(var, value);
 	}
 
 }

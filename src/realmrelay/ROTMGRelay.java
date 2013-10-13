@@ -46,6 +46,7 @@ public final class ROTMGRelay {
 	private final List<User> users = new ArrayList<User>();
 	private final List<User> newUsers = new Vector<User>();
 	private final Map<Integer, InetSocketAddress> gameIdSocketAddressMap = new HashMap<Integer, InetSocketAddress>();
+	private final Map<String, Object> globalVarMap = new HashMap<String, Object>();
 	
 	private ROTMGRelay() {
 		Properties p = new Properties();
@@ -116,12 +117,20 @@ public final class ROTMGRelay {
 		System.out.println(raw);
 	}
 	
+	public Object getGlobal(String var) {
+		return this.globalVarMap.get(var);
+	}
+	
 	public InetSocketAddress getSocketAddress(int gameId) {
 		InetSocketAddress socketAddress = this.gameIdSocketAddressMap.get(gameId);
 		if (socketAddress == null) {
 			return new InetSocketAddress(this.remoteHost, this.remotePort);
 		}
 		return socketAddress;
+	}
+	
+	public void setGlobal(String var, Object value) {
+		this.globalVarMap.put(var, value);
 	}
 	
 	public void setSocketAddress(int gameId, String host, int port) {
