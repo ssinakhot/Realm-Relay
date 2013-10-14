@@ -147,6 +147,7 @@ public class GETXmlParse {
 				if ((nodeList = el.getElementsByTagName("NumProjectiles")).getLength() > 0) {
 					itemData.numProjectiles = Integer.parseInt(nodeList.item(0).getTextContent());
 				}
+				itemMap.put(idtemp, itemData);
 			} else if (xmlType == XML_OBJECTS) {
 				ObjectData objectData = new ObjectData();
 				objectData.type = Integer.decode(el.getAttribute("type"));
@@ -214,6 +215,7 @@ public class GETXmlParse {
 				if ((nodeList = el.getElementsByTagName("Z")).getLength() > 0) {
 					objectData.z = Float.parseFloat(nodeList.item(0).getTextContent());
 				}
+				objectMap.put(idtemp, objectData);
 			} else if (xmlType == XML_PACKETS) {
 				String typetemp = el.getAttribute("type");
 				int ParsedTileType = Integer.decode(typetemp);

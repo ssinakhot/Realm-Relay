@@ -7,6 +7,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.Map.Entry;
 
 
 import realmrelay.GETXmlParse;
@@ -14,9 +15,12 @@ import realmrelay.ROTMGRelay;
 import realmrelay.User;
 import realmrelay.data.BitmapData;
 import realmrelay.data.Entity;
+import realmrelay.data.GroundData;
 import realmrelay.data.Item;
+import realmrelay.data.ItemData;
 import realmrelay.data.Location;
 import realmrelay.data.LocationRecord;
+import realmrelay.data.ObjectData;
 import realmrelay.data.SlotObject;
 import realmrelay.data.StatData;
 import realmrelay.data.Status;
@@ -133,8 +137,46 @@ public abstract class ScriptEvent {
 		ROTMGRelay.echo(message);
 	}
 	
-	public Object findItem(String name) {
-		return GETXmlParse.itemMap.get(name);
+	public Object findGround(Object searchterm) {
+		if (searchterm instanceof Number) {
+			int type = (int)((double) searchterm);
+			for (Entry<String, Object> entry: GETXmlParse.tileMap.entrySet()) {
+				GroundData groundData = (GroundData) entry.getValue();
+				if (groundData.type == type) {
+					return groundData;
+				}
+			}
+			return null;
+		}
+		return GETXmlParse.tileMap.get(searchterm.toString());
+	}
+	
+	public Object findItem(Object searchterm) {
+		if (searchterm instanceof Number) {
+			int type = (int)((double) searchterm);
+			for (Entry<String, Object> entry: GETXmlParse.itemMap.entrySet()) {
+				ItemData itemData = (ItemData) entry.getValue();
+				if (itemData.type == type) {
+					return itemData;
+				}
+			}
+			return null;
+		}
+		return GETXmlParse.itemMap.get(searchterm.toString());
+	}
+	
+	public Object findObject(Object searchterm) {
+		if (searchterm instanceof Number) {
+			int type = (int)((double) searchterm);
+			for (Entry<String, Object> entry: GETXmlParse.objectMap.entrySet()) {
+				ObjectData objectData = (ObjectData) entry.getValue();
+				if (objectData.type == type) {
+					return objectData;
+				}
+			}
+			return null;
+		}
+		return GETXmlParse.objectMap.get(searchterm.toString());
 	}
 	
 	public byte findPacketId(String name) {
@@ -143,14 +185,6 @@ public abstract class ScriptEvent {
 			return -1;
 		}
 		return id.byteValue();
-	}
-	
-	public Object findObject(String name) {
-		return GETXmlParse.objectMap.get(name);
-	}
-	
-	public Object findTileType(String name) {
-		return GETXmlParse.tileMap.get(name);
 	}
 	
 	public Object getGlobal(String var) {
