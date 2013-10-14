@@ -1,4 +1,3 @@
-
 package realmrelay;
 
 import java.io.InputStream;
@@ -12,24 +11,33 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Element;
 
+import realmrelay.data.GroundData;
+import realmrelay.data.ItemData;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class GETXmlParse {
 
-	public static final Map<String, Integer> objectMap = new HashMap<String, Integer>();
-	public static final Map<String, Integer> tileMap = new HashMap<String, Integer>();
-	public static final Map<String, Integer> packetMap = new HashMap<String, Integer>();
+	public static final Map<String, Object> itemMap = new HashMap<String, Object>();
+	public static final Map<String, Object> objectMap = new HashMap<String, Object>();
+	public static final Map<String, Object> tileMap = new HashMap<String, Object>();
+	public static final Map<String, Object> packetMap = new HashMap<String, Object>();
 	
 	private static final String USER_AGENT = "Mozilla/5.0";
+	private static final int XML_ITEMS = 0;
+	private static final int XML_OBJECTS = 1;
+	private static final int XML_PACKETS = 2;
+	private static final int XML_TILES = 3;
 
 	public static void parseXMLData() throws Exception {
-		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/objects.xml", objectMap, "Object");
-		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/tiles.xml", tileMap, "Ground");
-		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/packets.xml", packetMap, "Packet");
+		// parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/XML/Objects.xml", objectMap, "Object", XML_OBJECTS);
+		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/XML/Tile.xml", tileMap, "Ground", XML_TILES);
+		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/XML/Packets.xml", packetMap, "Packet", XML_PACKETS);
+		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/XML/Items.xml", itemMap, "Object", XML_ITEMS);
 	}
 
-	private static void parseXMLtoMap(String url, Map<String, Integer> map, String elementTagName) {
+	private static void parseXMLtoMap(String url, Map<String, Object> map, String elementTagName, int xmlType) {
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -50,32 +58,98 @@ public class GETXmlParse {
 			Document doc = dBuilder.parse(in);
 			in.close();
 			doc.getDocumentElement().normalize();
+			
 			NodeList nodeList = doc.getElementsByTagName(elementTagName);
-			if (nodeList != null) {
-				xmlToMap("type", "id", nodeList, map);
-			}
+			xmlToMap(nodeList, map, xmlType);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private static void xmlToMap(String type, String id, NodeList node, Map<String, Integer> map) {
-		if (node != null) {
-			if (node.getLength() > 0) {
-				for (int j = 0; j < node.getLength(); j++) {
-					Element el = (Element) node.item(j);
-					if (el.hasAttribute(id)) {
-						String typetemp = el.getAttribute(type);
-						String idtemp = el.getAttribute(id);
-						
-						// convert names with lowercase letters and spaces to the correct format
-						idtemp = idtemp.replace(" ", "").toUpperCase();
-						
-						int ParsedTileType = Integer.decode(typetemp);
-						map.put(idtemp, ParsedTileType);
-						// System.out.println(idtemp);
-					}
+	private static void xmlToMap(NodeList node, Map<String, Object> map, int xmlType) {
+		for (int j = 0; j < node.getLength(); j++) {
+			Element el = (Element) node.item(j);
+			// convert names with lowercase letters and spaces to the correct format
+			String idtemp = el.getAttribute("id").replace(" ", "").toUpperCase();
+			if(xmlType == XML_TILES) {
+				GroundData groundData = new GroundData();
+				groundData.type = Integer.decode(el.getAttribute("type"));
+				NodeList nodeList = null;
+				if ((nodeList = el.getElementsByTagName("MaxDamage")).getLength() > 0) {
+					groundData.maxDamage = Integer.parseInt(nodeList.item(0).getTextContent());
 				}
+				if ((nodeList = el.getElementsByTagName("MinDamage")).getLength() > 0) {
+					groundData.minDamage = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if (el.getElementsByTagName("NoWalk").getLength() > 0) {
+					groundData.noWalk = true;
+				}
+				if (el.getElementsByTagName("Push").getLength() > 0) {
+					groundData.push = true;
+				}
+				if (el.getElementsByTagName("Sink").getLength() > 0) {
+					groundData.sink = true;
+				}
+				if ((nodeList = el.getElementsByTagName("Speed")).getLength() > 0){
+					groundData.speed = Float.parseFloat(nodeList.item(0).getTextContent());
+				}
+				tileMap.put(idtemp, groundData);
+			} else if (xmlType == XML_ITEMS) {
+				ItemData itemData = new ItemData();
+				itemData.type = Integer.decode(el.getAttribute("type"));
+				NodeList nodeList = null;
+				if ((nodeList = el.getElementsByTagName("SlotType")).getLength() > 0) {
+					itemData.slotType = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("Tier")).getLength() > 0) {
+					itemData.tier = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("PetFamily")).getLength() > 0) {
+					itemData.petFamily = nodeList.item(0).getTextContent();
+				}
+				if ((nodeList = el.getElementsByTagName("Rarity")).getLength() > 0) {
+					itemData.rarity = nodeList.item(0).getTextContent();
+				}
+				if ((nodeList = el.getElementsByTagName("Activate")).getLength() > 0) {
+					itemData.activate = nodeList.item(0).getTextContent();
+				}
+				if ((nodeList = el.getElementsByTagName("Consumable")).getLength() > 0) {
+					itemData.consumable = true;
+				}
+				if ((nodeList = el.getElementsByTagName("Soulbound")).getLength() > 0) {
+					itemData.soulbound = true;
+				}
+				if ((nodeList = el.getElementsByTagName("Usable")).getLength() > 0) {
+					itemData.usable = true;
+				}
+				if ((nodeList = el.getElementsByTagName("BagType")).getLength() > 0) {
+					itemData.bagType = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("FeedPower")).getLength() > 0) {
+					itemData.feedPower = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("RateOfFire")).getLength() > 0) {
+					itemData.rateOfFire = Float.parseFloat(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("FameBonus")).getLength() > 0) {
+					itemData.fameBonus = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("MpCost")).getLength() > 0) {
+					itemData.mpCost = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("MpEndCost")).getLength() > 0) {
+					itemData.mpEndCost = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("MultiPhase")).getLength() > 0) {
+					itemData.multiPhase = true;
+				}
+				if ((nodeList = el.getElementsByTagName("NumProjectiles")).getLength() > 0) {
+					itemData.numProjectiles = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+			} else if (xmlType == XML_PACKETS) {
+				String typetemp = el.getAttribute("type");
+				int ParsedTileType = Integer.decode(typetemp);
+				map.put(idtemp, ParsedTileType);
 			}
 		}
 	}

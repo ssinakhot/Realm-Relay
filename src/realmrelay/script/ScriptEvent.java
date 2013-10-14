@@ -133,28 +133,24 @@ public abstract class ScriptEvent {
 		ROTMGRelay.echo(message);
 	}
 	
+	public Object findItem(String name) {
+		return GETXmlParse.itemMap.get(name);
+	}
+	
 	public byte findPacketId(String name) {
-		Integer id = GETXmlParse.packetMap.get(name);
+		Integer id = (Integer) GETXmlParse.packetMap.get(name);
 		if (id == null) {
 			return -1;
 		}
 		return id.byteValue();
 	}
 	
-	public int findObjectType(String name) {
-		Integer type = GETXmlParse.objectMap.get(name);
-		if (type == null) {
-			return -1;
-		}
-		return type;
+	public Object findObject(String name) {
+		return GETXmlParse.objectMap.get(name);
 	}
 	
-	public int findTileType(String name) {
-		Integer type = GETXmlParse.tileMap.get(name);
-		if (type == null) {
-			return -1;
-		}
-		return type;
+	public Object findTileType(String name) {
+		return GETXmlParse.tileMap.get(name);
 	}
 	
 	public Object getGlobal(String var) {

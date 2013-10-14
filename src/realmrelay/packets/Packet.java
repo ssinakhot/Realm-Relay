@@ -149,7 +149,7 @@ public abstract class Packet implements IData {
 	
 	public byte id() {
 		String name = this.getName();
-		Integer id = GETXmlParse.packetMap.get(name);
+		Integer id = (Integer) GETXmlParse.packetMap.get(name);
 		if (id == null) {
 			return -1;
 		}
