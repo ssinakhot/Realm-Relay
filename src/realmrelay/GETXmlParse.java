@@ -13,6 +13,7 @@ import org.w3c.dom.Element;
 
 import realmrelay.data.GroundData;
 import realmrelay.data.ItemData;
+import realmrelay.data.ObjectData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class GETXmlParse {
 	private static final int XML_TILES = 3;
 
 	public static void parseXMLData() throws Exception {
-		// parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/XML/Objects.xml", objectMap, "Object", XML_OBJECTS);
+		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/XML/Objects.xml", objectMap, "Object", XML_OBJECTS);
 		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/XML/Tile.xml", tileMap, "Ground", XML_TILES);
 		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/XML/Packets.xml", packetMap, "Packet", XML_PACKETS);
 		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/XML/Items.xml", itemMap, "Object", XML_ITEMS);
@@ -145,6 +146,73 @@ public class GETXmlParse {
 				}
 				if ((nodeList = el.getElementsByTagName("NumProjectiles")).getLength() > 0) {
 					itemData.numProjectiles = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+			} else if (xmlType == XML_OBJECTS) {
+				ObjectData objectData = new ObjectData();
+				objectData.type = Integer.decode(el.getAttribute("type"));
+				NodeList nodeList = null;
+				if ((nodeList = el.getElementsByTagName("MaxHitPoints")).getLength() > 0) {
+					objectData.maxHitPoints = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("MaxSize")).getLength() > 0) {
+					objectData.maxSize = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("MinSize")).getLength() > 0) {
+					objectData.minSize = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("Size")).getLength() > 0) {
+					objectData.size = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("SizeStep")).getLength() > 0) {
+					objectData.sizeStep = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("ShadowSize")).getLength() > 0) {
+					objectData.shadowSize = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("Color")).getLength() > 0) {
+					objectData.color = Integer.decode(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("XpMult")).getLength() > 0) {
+					objectData.xpMult = Float.parseFloat(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("Rotation")).getLength() > 0) {
+					objectData.rotation = Float.parseFloat(nodeList.item(0).getTextContent());
+				}
+				if (el.getElementsByTagName("DrawOnGround").getLength() > 0) {
+					objectData.drawOnGround = true;
+				}
+				if (el.getElementsByTagName("Enemy").getLength() > 0) {
+					objectData.enemy = true;
+				}
+				if (el.getElementsByTagName("FullOccupy").getLength() > 0) {
+					objectData.fullOccupy = true;
+				}
+				if (el.getElementsByTagName("OccupySquare").getLength() > 0) {
+					objectData.occupySquare = true;
+				}
+				if (el.getElementsByTagName("EnemyOccupySquare").getLength() > 0) {
+					objectData.enemyOccupySquare = true;
+				}
+				if (el.getElementsByTagName("BlocksSight").getLength() > 0) {
+					objectData.blocksSight = true;
+				}
+				if (el.getElementsByTagName("NoMiniMap").getLength() > 0) {
+					objectData.noMiniMap = true;
+				}
+				if (el.getElementsByTagName("StasisImmune").getLength() > 0) {
+					objectData.stasisImmune = true;
+				}
+				if (el.getElementsByTagName("ProtectFromGroundDamage").getLength() > 0) {
+					objectData.protectFromGroundDamage = true;
+				}
+				if (el.getElementsByTagName("ProtectFromSink").getLength() > 0) {
+					objectData.protectFromSink = true;
+				}
+				if (el.getElementsByTagName("Connects").getLength() > 0) {
+					objectData.connects = true;
+				}
+				if ((nodeList = el.getElementsByTagName("Z")).getLength() > 0) {
+					objectData.z = Float.parseFloat(nodeList.item(0).getTextContent());
 				}
 			} else if (xmlType == XML_PACKETS) {
 				String typetemp = el.getAttribute("type");
