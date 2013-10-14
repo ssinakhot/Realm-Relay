@@ -13,10 +13,10 @@ import realmrelay.GETXmlParse;
 import realmrelay.ROTMGRelay;
 import realmrelay.User;
 import realmrelay.data.BitmapData;
+import realmrelay.data.Entity;
 import realmrelay.data.Item;
 import realmrelay.data.Location;
 import realmrelay.data.LocationRecord;
-import realmrelay.data.ObjectData;
 import realmrelay.data.SlotObject;
 import realmrelay.data.StatData;
 import realmrelay.data.Status;
@@ -89,8 +89,8 @@ public abstract class ScriptEvent {
 		return new LocationRecord();
 	}
 	
-	public ObjectData createObjectData() {
-		return new ObjectData();
+	public Entity createEntity() {
+		return new Entity();
 	}
 	
 	/**

@@ -4,7 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import realmrelay.data.ObjectData;
+import realmrelay.data.Entity;
 import realmrelay.data.Tile;
 import realmrelay.packets.Packet;
 
@@ -12,7 +12,7 @@ import realmrelay.packets.Packet;
 public class UpdatePacket extends Packet {
 	
 	public Tile[] tiles = new Tile[0];
-	public ObjectData[] newObjs = new ObjectData[0];
+	public Entity[] newObjs = new Entity[0];
 	public int[] drops = new int[0];
 
 	@Override
@@ -23,11 +23,11 @@ public class UpdatePacket extends Packet {
 			tile.parseFromInput(in);
 			this.tiles[i] = tile;
 		}
-		this.newObjs = new ObjectData[in.readShort()];
+		this.newObjs = new Entity[in.readShort()];
 		for (int i = 0; i < this.newObjs.length; i++) {
-			ObjectData objectData = new ObjectData();
-			objectData.parseFromInput(in);
-			this.newObjs[i] = objectData;
+			Entity Entity = new Entity();
+			Entity.parseFromInput(in);
+			this.newObjs[i] = Entity;
 		}
 		this.drops = new int[in.readShort()];
 		for (int i = 0; i < this.drops.length; i++) {
@@ -42,7 +42,7 @@ public class UpdatePacket extends Packet {
 			tile.writeToOutput(out);
 		}
 		out.writeShort(this.newObjs.length);
-		for (ObjectData obj: this.newObjs) {
+		for (Entity obj: this.newObjs) {
 			obj.writeToOutput(out);
 		}
 		out.writeShort(this.drops.length);

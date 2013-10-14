@@ -5,7 +5,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 
-public class ObjectData implements IData {
+public class Entity implements IData {
 	
 	public short objectType;
 	public Status status = new Status();
