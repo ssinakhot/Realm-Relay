@@ -28,7 +28,7 @@ import realmrelay.data.Tile;
 import realmrelay.packets.Packet;
 
 
-public abstract class ScriptEvent {
+public class ScriptEvent {
 	
 	protected final User user;
 	

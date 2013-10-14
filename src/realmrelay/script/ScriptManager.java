@@ -42,9 +42,11 @@ public class ScriptManager {
 			
 		};
 		File[] files = folder.listFiles(filter);
+		Object scriptEvent = new ScriptEvent(this.user);
 		for (File file: files) {
 			ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("JavaScript");
 			try {
+				scriptEngine.put("$", scriptEvent);
 				scriptEngine.eval(new FileReader(file));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
