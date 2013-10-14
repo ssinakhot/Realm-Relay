@@ -1,24 +1,20 @@
 // core.js
 
-var ID_HELLO = 51;
-var ID_FAILURE = 0;
-var ID_RECONNECT = 15;
-var ID_CREATE_SUCCESS = 47;
-var ID_NOTIFICATION = 91;
-var ID_PLAYERTEXT = 80;
+var ID_HELLO;
+var ID_FAILURE;
+var ID_RECONNECT;
+var ID_CREATE_SUCCESS;
+var ID_NOTIFICATION;
 
-
-var lastIp = null;
-var lastPort = null;
-var lastGameId = null;
-var lastKeyTime = null;	
-var lastKey = null;
-
-var reconPacket = null;
 var helloPacket = null;
 
 function onEnable(event) {
-	event.echo("Waiting for HELLO from client...");	
+	ID_HELLO = event.findPacketId("HELLO");
+	ID_FAILURE = event.findPacketId("FAILURE");
+	ID_RECONNECT = event.findPacketId("RECONNECT");
+	ID_CREATE_SUCCESS = event.findPacketId("CREATE_SUCCESS");
+	ID_NOTIFICATION = event.findPacketId("NOTIFICATION");
+	event.echo("Waiting for HELLO from client...");
 }
 
 function onConnect(event) {
@@ -38,21 +34,16 @@ function onDisconnect(event) {
 
 function onClientPacket(event) {
 	var packet = event.getPacket();
-	if(packet.id() == ID_HELLO) {
-		//console.log("HELLO");
+	switch (packet.id()) {
+		case ID_HELLO: {
 			event.cancel();
 			event.connect(packet.gameId);
 			helloPacket = packet;
-			event.echo("buildVersion: " + 17.2);			
-			if(helloPacket.gameId != -2 && helloPacket.gameId != -5)
-				{
-					event.setGlobal("helloPacket", helloPacket);					
-					
-					
-				}
-		}	
+			event.echo("buildVersion: " + packet.buildVersion);
+			break;
+		}
 	}
-
+}
 
 function onServerPacket(event) {
 	var packet = event.getPacket();
@@ -63,22 +54,15 @@ function onServerPacket(event) {
 		}
 		case ID_RECONNECT: {
 			var host;
-			var port;			
+			var port;
 			if (packet.port == -1) { // -1 means same server/port you are on
 				host = event.getRemoteHost();
 				port = event.getRemotePort();
 			} else {
-				host = packet.host;				
-				port = packet.port;				
-			}			
-			if(packet.gameId != -2 && helloPacket.gameId != -5)
-			{
-				event.setGlobal("reconHost", host);
-				event.setGlobal("reconPort", port);
-				
+				host = packet.host;
+				port = packet.port;
 			}
-			event.echo(host);
-			event.setGameIdSocketAddress(0, host, port);
+			event.setGameIdSocketAddress(packet.gameId, host, port);
 			packet.host = "localhost";
 			packet.port = 2050;
 			break;
@@ -91,9 +75,9 @@ function onServerPacket(event) {
 }
 
 function displayRealmRelayNotification(event, playerObjectId) {
-	 var notificationPacket = event.createPacket(ID_NOTIFICATION);
-	 notificationPacket.objectId = playerObjectId;
-	 notificationPacket.message = "{\"key\":\"blank\",\"tokens\":{\"data\":\" "+ "Trollaux is GAYY!" +"\"}}";
-	 notificationPacket.color = 0xFF7F00;
-	 event.sendToClient(notificationPacket);
-	}
+	var notificationPacket = event.createPacket(ID_NOTIFICATION);
+	notificationPacket.objectId = playerObjectId;
+	notificationPacket.message = "{\"key\":\"server.plus_symbol\",\"tokens\":{\"amount\":\"Realm Relay enabled!\"}}";
+	notificationPacket.color = 0x33FFFF;
+	event.sendToClient(notificationPacket);
+}
