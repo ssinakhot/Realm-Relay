@@ -74,6 +74,7 @@ public class GETXmlParse {
 			String idtemp = el.getAttribute("id").replace(" ", "").toUpperCase();
 			if(xmlType == XML_TILES) {
 				GroundData groundData = new GroundData();
+				groundData.id = el.getAttribute("id");
 				groundData.type = Integer.decode(el.getAttribute("type"));
 				NodeList nodeList = null;
 				if ((nodeList = el.getElementsByTagName("MaxDamage")).getLength() > 0) {
@@ -97,6 +98,7 @@ public class GETXmlParse {
 				tileMap.put(idtemp, groundData);
 			} else if (xmlType == XML_ITEMS) {
 				ItemData itemData = new ItemData();
+				itemData.id = el.getAttribute("id");
 				itemData.type = Integer.decode(el.getAttribute("type"));
 				NodeList nodeList = null;
 				if ((nodeList = el.getElementsByTagName("SlotType")).getLength() > 0) {
@@ -150,6 +152,7 @@ public class GETXmlParse {
 				itemMap.put(idtemp, itemData);
 			} else if (xmlType == XML_OBJECTS) {
 				ObjectData objectData = new ObjectData();
+				objectData.id = el.getAttribute("id");
 				objectData.type = Integer.decode(el.getAttribute("type"));
 				NodeList nodeList = null;
 				if ((nodeList = el.getElementsByTagName("MaxHitPoints")).getLength() > 0) {

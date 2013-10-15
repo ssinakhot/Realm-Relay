@@ -2,6 +2,7 @@ package realmrelay.data;
 
 public class ItemData {
 	
+	public String id = ""; // attribute id
 	public int type = -1; // attribute type
 	public int slotType = -1; // element SlotType
 	public int tier = 0; // element Tier

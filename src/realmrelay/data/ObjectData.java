@@ -2,6 +2,7 @@ package realmrelay.data;
 
 public class ObjectData {
 	
+	public String id = ""; // attribute id
 	public int type = -1; // attribute type
 	public int maxHitPoints = -1; // element MaxHitPoints
 	public int maxSize = -1; // element MaxSize
