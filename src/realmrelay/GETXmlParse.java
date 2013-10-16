@@ -14,6 +14,7 @@ import org.w3c.dom.Element;
 import realmrelay.data.GroundData;
 import realmrelay.data.ItemData;
 import realmrelay.data.ObjectData;
+import realmrelay.data.ProjectileData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,10 +54,6 @@ public class GETXmlParse {
 
 			// add request header
 			con.setRequestProperty("User-Agent", USER_AGENT);
-
-			/*int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'GET' request to URL : " + url);
-			System.out.println("Response Code : " + responseCode);*/
 
 			InputStream in = con.getInputStream();
 			Document doc = dBuilder.parse(in);
@@ -152,6 +149,29 @@ public class GETXmlParse {
 				}
 				if ((nodeList = el.getElementsByTagName("NumProjectiles")).getLength() > 0) {
 					itemData.numProjectiles = Integer.parseInt(nodeList.item(0).getTextContent());
+				}
+				if ((nodeList = el.getElementsByTagName("Projectile")).getLength() > 0) {
+					for (int i = 0; i < nodeList.getLength(); i++) {
+						Element projectile = (Element) nodeList.item(i);
+						ProjectileData projectileData = new ProjectileData();
+						NodeList nl = null;
+						if ((nl = projectile.getElementsByTagName("ObjectId")).getLength() > 0) {
+							projectileData.objectId = nl.item(0).getTextContent();
+						}
+						if ((nl = projectile.getElementsByTagName("Speed")).getLength() > 0) {
+							projectileData.speed = Float.parseFloat(nl.item(0).getTextContent());
+						}
+						if ((nl = projectile.getElementsByTagName("MaxDamage")).getLength() > 0) {
+							projectileData.maxDamage = Integer.parseInt(nl.item(0).getTextContent());
+						}
+						if ((nl = projectile.getElementsByTagName("MinDamage")).getLength() > 0) {
+							projectileData.minDamage = Integer.parseInt(nl.item(0).getTextContent());
+						}
+						if ((nl = projectile.getElementsByTagName("LifetimeMS")).getLength() > 0) {
+							projectileData.lifetimeMS = Integer.parseInt(nl.item(0).getTextContent());
+						}
+						itemData.projectiles.add(projectileData);
+					}
 				}
 				itemMap.put(idtemp, itemData);
 				itemMap2.put(itemData.type, itemData);
