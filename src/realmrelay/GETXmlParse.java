@@ -36,10 +36,10 @@ public class GETXmlParse {
 	private static final int XML_TILES = 3;
 
 	public static void parseXMLData() throws Exception {
-		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/XML/Objects.xml", "Object", XML_OBJECTS);
-		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/XML/Tile.xml", "Ground", XML_TILES);
-		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/XML/Packets.xml", "Packet", XML_PACKETS);
-		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/XML/Items.xml", "Object", XML_ITEMS);
+		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/xml/objects.xml", "Object", XML_OBJECTS);
+		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/xml/tiles.xml", "Ground", XML_TILES);
+		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/xml/packets.xml", "Packet", XML_PACKETS);
+		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/xml/items.xml", "Object", XML_ITEMS);
 	}
 
 	private static void parseXMLtoMap(String url, String elementTagName, int xmlType) {
