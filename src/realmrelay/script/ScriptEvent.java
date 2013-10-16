@@ -7,7 +7,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
 import java.net.SocketAddress;
-import java.util.Map.Entry;
 
 
 import realmrelay.GETXmlParse;
@@ -137,44 +136,26 @@ public class ScriptEvent {
 		ROTMGRelay.echo(message);
 	}
 	
-	public Object findGround(Object searchterm) {
+	public GroundData findGround(Object searchterm) {
 		if (searchterm instanceof Number) {
 			int type = (int)((double) searchterm);
-			for (Entry<String, Object> entry: GETXmlParse.tileMap.entrySet()) {
-				GroundData groundData = (GroundData) entry.getValue();
-				if (groundData.type == type) {
-					return groundData;
-				}
-			}
-			return null;
+			return GETXmlParse.tileMap2.get(type);
 		}
 		return GETXmlParse.tileMap.get(searchterm.toString().toUpperCase());
 	}
 	
-	public Object findItem(Object searchterm) {
+	public ItemData findItem(Object searchterm) {
 		if (searchterm instanceof Number) {
 			int type = (int)((double) searchterm);
-			for (Entry<String, Object> entry: GETXmlParse.itemMap.entrySet()) {
-				ItemData itemData = (ItemData) entry.getValue();
-				if (itemData.type == type) {
-					return itemData;
-				}
-			}
-			return null;
+			return GETXmlParse.itemMap2.get(type);
 		}
 		return GETXmlParse.itemMap.get(searchterm.toString().toUpperCase());
 	}
 	
-	public Object findObject(Object searchterm) {
+	public ObjectData findObject(Object searchterm) {
 		if (searchterm instanceof Number) {
 			int type = (int)((double) searchterm);
-			for (Entry<String, Object> entry: GETXmlParse.objectMap.entrySet()) {
-				ObjectData objectData = (ObjectData) entry.getValue();
-				if (objectData.type == type) {
-					return objectData;
-				}
-			}
-			return null;
+			return GETXmlParse.objectMap2.get(type);
 		}
 		return GETXmlParse.objectMap.get(searchterm.toString().toUpperCase());
 	}
