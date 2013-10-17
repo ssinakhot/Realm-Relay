@@ -37,7 +37,11 @@ public class ScriptManager {
 
 			@Override
 			public boolean accept(File dir, String name) {
-				return name.substring(name.lastIndexOf(".")).equalsIgnoreCase(".js");
+				int lastIndex = name.lastIndexOf(".");
+				if (lastIndex == -1) {
+					return false;
+				}
+				return name.substring(lastIndex).equalsIgnoreCase(".js");
 			}
 			
 		};
