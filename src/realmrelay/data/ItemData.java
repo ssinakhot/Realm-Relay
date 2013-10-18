@@ -1,8 +1,5 @@
 package realmrelay.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ItemData {
 	
 	public String id = ""; // attribute id
@@ -23,6 +20,6 @@ public class ItemData {
 	public int mpEndCost = -1; // element MpEndCost
 	public boolean multiPhase = false; // element MultiPhase
 	public int numProjectiles = -1; // element NumProjectiles
-	public List<ProjectileData> projectiles = new ArrayList<ProjectileData>();
+	public Object[] projectiles = new Object[0];
 
 }

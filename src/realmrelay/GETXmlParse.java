@@ -24,6 +24,8 @@ import realmrelay.data.ObjectData;
 import realmrelay.data.ProjectileData;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class GETXmlParse {
@@ -183,6 +185,7 @@ public class GETXmlParse {
 					itemData.numProjectiles = Integer.parseInt(nodeList.item(0).getTextContent());
 				}
 				if ((nodeList = el.getElementsByTagName("Projectile")).getLength() > 0) {
+					List<ProjectileData> projectiles = new LinkedList<ProjectileData>();
 					for (int i = 0; i < nodeList.getLength(); i++) {
 						Element projectile = (Element) nodeList.item(i);
 						ProjectileData projectileData = new ProjectileData();
@@ -202,8 +205,9 @@ public class GETXmlParse {
 						if ((nl = projectile.getElementsByTagName("LifetimeMS")).getLength() > 0) {
 							projectileData.lifetimeMS = Integer.parseInt(nl.item(0).getTextContent());
 						}
-						itemData.projectiles.add(projectileData);
+						projectiles.add(projectileData);
 					}
+					itemData.projectiles = projectiles.toArray();
 				}
 				itemMap.put(idtemp, itemData);
 				itemMap2.put(itemData.type, itemData);
