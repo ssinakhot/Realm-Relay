@@ -1,5 +1,5 @@
-Realm Relay v1.0.0 Script Documentation
-designed for ROTMG v17.2
+Realm Relay v1.1.0 Script Documentation
+designed for ROTMG v17.3+
 ________________________________________________________________
 :INDEX
 - General script info - GENERAL
@@ -15,6 +15,7 @@ ________________________________________________________________
 - A few variable names may unusual, because they were obfuscated in the decompiled rotmg code.
 - Some variable names in packets or data objects may change later.
 - Not all RotMG packets are included because more insight into the rotmg code is necessary.
+- $ may be used universally as an alias to call functions from
 ________________________________________________________________
 :EVENTS
 - All event handlers have one or more parameters.
@@ -61,8 +62,8 @@ Location createLocation()
 LocationRecord createLocationRecord()
 	- creates a LocationRecord object
 	
-ObjectData createObjectData()
-	- creates an ObjectData object
+Entity createEntity()
+	- creates an Entity object
 	
 Packet createPacket(byte id)
 	- using the packet id provided, creates the correct type of Packet
@@ -84,6 +85,21 @@ void disconnect()
 
 void echo(String message)
 	- echo a message to the console
+	
+GroundData findGround(searchterm)
+	- find GroundData for the specified id or type, null if not found
+	
+ItemData findItem(searchterm)
+	- find ItemData for the specified id or type, null if not found
+	
+ObjectData findObject(searchterm)
+	- find ObjectData for the specified id or type, null if not found
+	
+byte findPacketId(string name)
+	- find packet id, or -1 if not found
+	
+Object getGlobal(string var)
+	- get value of a global var
 	
 string getRemoteHost()
 	- gets the current remote host name
@@ -110,6 +126,9 @@ void sendToServer(Packet packet)
 void setGameIdSocketAddress(int gameId, string host, int port)
 	- configures realm relay to correctly connect to the host:port when using the connect(gameId) function
 	
+void setGlobal(string var, Object value)
+	- set global var to specified value
+	
 !!! The following functions are only available in a PacketScriptEvent !!!
 
 void cancel()
@@ -128,11 +147,46 @@ BitmapData
 	int height;
 	byte[] bytes;
 	
+Entity
+	short objectType
+	Status status
+	
+GroundData
+	string id
+	int type
+	int maxDamage
+	int minDamage
+	boolean noWalk
+	boolean push
+	boolean sink
+	float speed
+	
 Item
 	int item
 	int slotType
 	boolean tradeable
 	boolean included
+	
+ItemData
+	string id
+	int type
+	int slotType
+	int tier
+	string petFamily
+	string rarity
+	string activate
+	boolean consumable
+	boolean soulbound
+	boolean usable
+	int bagType
+	int feedPower
+	float rateOfFire
+	int fameBonus
+	int mpCost
+	int mpEndCost
+	boolean multiPhase
+	int numProjectiles
+	ProjectileData[] projectiles
 	
 Location
 	float x
@@ -148,12 +202,40 @@ LocationRecord
 	float distanceTo(Location location)
 	
 ObjectData
-	short objectType
-	Status status
+	string id
+	int type
+	int maxHitPoints
+	int maxSize
+	int minSize
+	int size
+	int sizeStep
+	int shadowSize
+	int color
+	float xpMult
+	float rotation
+	boolean drawOnGround
+	boolean enemy
+	boolean fullOccupy
+	boolean occupySquare
+	boolean enemyOccupySquare
+	boolean blocksSight
+	boolean noMiniMap
+	boolean stasisImmune
+	boolean protectFromGroundDamage
+	boolean protectFromSink
+	boolean connects
+	float z
 	
 Packet
 	byte id()
 	string toString()
+	
+ProjectileData
+	string objectId
+	float speed
+	int maxDamage
+	int minDamage
+	int lifetimeMS
 	
 SlotObject
 	int objectId
@@ -178,122 +260,67 @@ ________________________________________________________________
 :PACKETS
 - All packet objects implement the id() function
 
-AcceptTradePacket 63
+!!! The following packets are CLIENT packets !!!
+
+ACCEPTTRADE
 	boolean[] myOffer
 	boolean[] yourOffer
 	
-AccountListPacket 81
-	int accountListId
-	string[] accountIds
-	
-AllyShootPacket 92
-	int bulletId
-	int ownerId
-	short containerId
-	float angle
-	
-AOEAckPacket 37
+AOEACK
 	int time
 	Location position
 	
-AOEPacket 24
-	Location pos
-	float radius
-	int damage
-	int effect
-	float duration
-	int origType
-	
-BuyPacket 40
+BUY
 	int objectId
 	
-BuyResultPacket 16
-	int result
-	string resultString
+CANCELTRADE
 	
-CancelTradePacket 25
-
-ChangeGuildRankPacket 36
+CHANGEGUILDRANK
 	string name
 	int guildRank
 	
-ChangeTradePacket 12
+CHANGETRADE
 	boolean[] offer
 	
-CheckCreditsPacket 33
-
-ChooseNamePacket 57
+CHECKCREDITS
+	
+CHOOSENAME
 	string name
 	
-ClientStatPacket 8
-	string name
-	int value
-	
-Create_SuccessPacket 47
-	int objectId
-	int charId
-	
-CreateGuildPacket 23
+CREATEGUILD
 	string name
 	
-CreatePacket 49
+CREATE
 	int classType
 	int skinType
 	
-DamagePacket 21
-	int targetId
-	int[] effects
-	int damageAmount
-	boolean kill
-	int bulletId
-	int objectId
-	
-DeathPacket 34
-	string accountId
-	int charId
-	string killedBy
-	int obf0
-	int obf1
-	
-EditAccountListPacket 31
+EDITACCOUNTLIST
 	int accountListId
 	boolean add
 	int objectId
 	
-EnemyHitPacket 58
+ENEMYHIT
 	int time
 	int bulletId
 	int targetId
 	boolean kill
 	
-EscapePacket 69
+ESCAPE
 
-FailurePacket 0
-	int errorId
-	string errorDescription
-	
-Global_NotificationPacket 45
-	int type
-	string text
-	
-GoToAckPacket 61
+GOTOACK
 	int time
 	
-GoToPacket 14
-	int objectId
-	Location pos
-	
-GroundDamagePacket 52
+GROUNDDAMAGE
 	int time
 	Location position
 	
-GuildInvitePacket 39
+GUILDINVITE
 	string name
 	
-GuildRemovePacket 19
+GUILDREMOVE
 	string name
 	
-HelloPacket 51
+HELLO
 	string buildVersion
 	int gameId
 	string guid
@@ -308,30 +335,159 @@ HelloPacket 51
 	string obf4
 	string obf5
 	
-InvDropPacket 38
+INVDROP
 	SlotObject slotObject
 	
-InvitedToGuildPacket 85
-	string name
-	string guildName
-	
-InvResultPacket 53
-	int result
-	
-InvSwapPacket 6
+INVSWAP
 	int time
 	Location position
 	SlotObject slotObject1
 	SlotObject slotObject2
 	
-JoinGuildPacket 27
+JOINGUILD
 	string guildName
 	
-LoadPacket 17
+LOAD
 	int charId
 	boolean isFromArena
 	
-MapInfoPacket 76
+MOVE
+	int tickId
+	int time
+	Location newPosition
+	LocationRecord[] records
+	
+OTHERHIT
+	int time
+	int bulletId
+	int objectId
+	int targetId
+	
+PLAYERHIT
+	int bulletId
+	int objectId
+	
+PLAYERSHOOT
+	int time
+	int bulletId
+	int containerType
+	Location startingPos
+	float angle
+	
+PLAYERTEXT
+	string text
+	
+PONG
+	int serial
+	int time
+	
+REQUESTTRADE
+	string name
+	
+RESKIN
+	int skinID
+	
+SETCONDITION
+	int conditionEffect
+	float conditionDuration
+	
+SHOOTACK
+	int time
+	
+SQUAREHIT
+	int time
+	int bulletId
+	int objectId
+	
+TELEPORT
+	int objectId
+	
+UPDATEACK
+
+USEITEM
+	int time
+	SlotObject slotObject
+	Location itemUsePos
+	int useType
+	
+USEPORTAL
+	int objectId
+	
+!!! The following packets are SERVER packets !!!
+
+ACCOUNTLIST
+	int accountListId
+	string[] accountIds
+	
+ALLYSHOOT
+	int bulletId
+	int ownerId
+	short containerId
+	float angle
+	
+AOE
+	Location pos
+	float radius
+	int damage
+	int effect
+	float duration
+	int origType
+	
+BUY
+	int result
+	string resultString
+	
+CLIENTSTAT
+	string name
+	int value
+	
+CREATE_SUCCESS
+	int objectId
+	int charId
+	
+CREATEGUILDRESULT
+	boolean success
+	string errorText
+	
+DAMAGE
+	int targetId
+	int[] effects
+	int damageAmount
+	boolean kill
+	int bulletId
+	int objectId
+	
+DEATH
+	string accountId
+	int charId
+	string killedBy
+	int obf0
+	int obf1
+
+FAILURE
+	int errorId
+	string errorDescription
+	
+FILE
+	string name
+	byte[] bytes
+	
+GLOBAL_NOTIFICATION
+	int type
+	string text
+	
+GOTO
+	int objectId
+	Location pos
+	
+INVITEDTOGUILD
+	string name
+	string guildName
+	
+INVRESULT
+	int result
+	
+MAPINFO
 	int width
 	int height
 	string name
@@ -344,64 +500,34 @@ MapInfoPacket 76
 	string[] clientXML
 	string[] extraXML
 	
-MovePacket 74
-	int tickId
-	int time
-	Location newPosition
-	LocationRecord[] records
-	
-NameResultPacket 22
+NAMERESULT
 	boolean success
 	string errorText
 	
-New_TickPacket 50
+NEW_TICK
 	int tickId
 	int tickTime
 	Status[] statuses
 	
-NotificationPacket 91
+NOTIFICATION
 	int objectId
 	string message
 	int color
 	
-OtherHitPacket 89
-	int time
-	int bulletId
-	int objectId
-	int targetId
-	
-PicPacket 5
+PIC
 	BitmapData bitmapData
 	
-PingPacket 1
+PING
 	int serial
 	
-PlayerHitPacket 26
-	int bulletId
-	int objectId
-	
-PlayerShootPacket 90
-	int time
-	int bulletId
-	int containerType
-	Location startingPos
-	float angle
-	
-PlayerTextPacket 80
-	string text
-	
-PlaySoundPacket 60
+PLAYSOUND
 	int ownerId
 	int soundId
 	
-PongPacket 9
-	int serial
-	int time
-	
-QuestObjIdPacket 48
+QUESTOBJID
 	int objectId
 	
-ReconnectPacket 15
+RECONNECT
 	string name
 	string host
 	int port
@@ -410,17 +536,7 @@ ReconnectPacket 15
 	boolean isFromArena
 	byte[] key
 	
-RequestTradePacket 4
-	string name
-	
-ReskinPacket 56
-	int skinID
-	
-SetConditionPacket 7
-	int conditionEffect
-	float conditionDuration
-	
-Shoot2Packet 59
+SHOOT2
 	int bulletId
 	int ownerId
 	int containerId
@@ -428,10 +544,7 @@ Shoot2Packet 59
 	float angle
 	short damage
 	
-ShootAckPacket 11
-	int time
-	
-ShootPacket 10
+SHOOT
 	int bulletId
 	int ownerId
 	int bulletType
@@ -441,22 +554,14 @@ ShootPacket 10
 	int numShots
 	float angleInc
 	
-Show_EffectPacket 83
+SHOW_EFFECT
 	int effectType
 	int targetObjectId
 	Location pos1
 	Location pos2
 	int color
 	
-SquareHitPacket 41
-	int time
-	int bulletId
-	int objectId
-	
-TeleportPacket 67
-	int objectId
-	
-TextPacket 20
+TEXT
 	string name
 	int objectId
 	int numStars
@@ -465,37 +570,27 @@ TextPacket 20
 	string text
 	string cleanText
 	
-TradeAcceptedPacket 86
+TRADEACCEPTED
 	boolean[] myOffer
 	boolean[] yourOffer
 	
-TradeChangedPacket 65
+TRADECHANGED
 	boolean[] offer
 	
-TradeDonePacket 13
+TRADEDONE
 	int code
 	string description
 	
-TradeRequestedPacket 78
+TRADEREQUESTED
 	string name
 	
-TradeStartPacket 77
+TRADESTART
 	Item[] myItems
 	string yourName
 	Item[] yourItems
-	
-UpdateAckPacket 42
 
-UpdatePacket 66
+UPDATE
 	Tile[] tiles
-	ObjectData[] newObjs
+	Entity[] newObjs
 	int[] drops
 	
-UseItemPacket 35
-	int time
-	SlotObject slotObject
-	Location itemUsePos
-	int useType
-	
-UsePortalPacket 55
-	int objectId

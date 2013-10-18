@@ -1,4 +1,4 @@
-Realm Relay v1.0.0 README
+Realm Relay v1.1.0 README
 ________________________________________________________________
 WINDOWS
 
@@ -27,6 +27,5 @@ Usage:
 	Open Terminal.app
 	Type the following text, with the correct filepath replaced:
 		sudo java -jar "path/to/realmrelay.jar"
+		
 ________________________________________________________________
-
-Always connect to the US EAST 3 server when in-game. You can change the server that you are actually connecting to by changing the settings.properties file
