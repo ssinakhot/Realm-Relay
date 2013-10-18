@@ -11,6 +11,7 @@ import java.util.List;
 
 
 import realmrelay.GETXmlParse;
+import realmrelay.ROTMGRelay;
 import realmrelay.data.IData;
 import realmrelay.packets.client.*;
 import realmrelay.packets.server.*;
@@ -97,6 +98,7 @@ public abstract class Packet implements IData {
 		try {
 			for (Class<? extends Packet> packetClass: list) {
 				Packet packet = packetClass.newInstance();
+				ROTMGRelay.echo("Mapping " + packet.getName() + " -> " + packet.id());
 				packetIdtoClassMap.set(packet.id(), packetClass);
 			}
 		} catch (Exception e) {

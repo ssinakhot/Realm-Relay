@@ -1,11 +1,18 @@
 package realmrelay;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -36,13 +43,18 @@ public class GETXmlParse {
 	private static final int XML_TILES = 3;
 
 	public static void parseXMLData() throws Exception {
-		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/xml/objects.xml", "Object", XML_OBJECTS);
-		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/xml/tiles.xml", "Ground", XML_TILES);
-		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/xml/packets.xml", "Packet", XML_PACKETS);
-		parseXMLtoMap("https://raw.github.com/DeVoidCoder/Realm-Relay/master/xml/items.xml", "Object", XML_ITEMS);
+		File file = new File("xml/");
+		if (!file.isDirectory()) {
+			file.mkdir();
+		}
+		parseXMLtoMap("http://www.devoidcoder.net/rr/xml/objects.xml", "Object", XML_OBJECTS, "xml/objects.xml");
+		parseXMLtoMap("http://www.devoidcoder.net/rr/xml/tiles.xml", "Ground", XML_TILES, "xml/tiles.xml");
+		parseXMLtoMap("http://www.devoidcoder.net/rr/xml/packets.xml", "Packet", XML_PACKETS, "xml/packets.xml");
+		parseXMLtoMap("http://www.devoidcoder.net/rr/xml/items.xml", "Object", XML_ITEMS, "xml/items.xml");
 	}
 
-	private static void parseXMLtoMap(String url, String elementTagName, int xmlType) {
+	private static void parseXMLtoMap(String url, String elementTagName, int xmlType, String localFilePath) {
+		File file = new File(localFilePath);
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -62,6 +74,26 @@ public class GETXmlParse {
 			
 			NodeList nodeList = doc.getElementsByTagName(elementTagName);
 			xmlToMap(nodeList, xmlType);
+			
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			StreamResult result = new StreamResult(file);
+			transformer.transform(source, result);
+		} catch (ConnectException e) {
+			try {
+				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+				InputStream in = new FileInputStream(file);
+				Document doc = dBuilder.parse(in);
+				in.close();
+				doc.getDocumentElement().normalize();
+				NodeList nodeList = doc.getElementsByTagName(elementTagName);
+				xmlToMap(nodeList, xmlType);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				throw new RuntimeException("cannot load local file: " + file.getName());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -247,8 +279,8 @@ public class GETXmlParse {
 				objectMap2.put(objectData.type, objectData);
 			} else if (xmlType == XML_PACKETS) {
 				String typetemp = el.getAttribute("type");
-				int ParsedTileType = Integer.decode(typetemp);
-				packetMap.put(idtemp, ParsedTileType);
+				int packetType = Integer.parseInt(typetemp);
+				packetMap.put(idtemp, packetType);
 			}
 		}
 	}
