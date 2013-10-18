@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 
 
 import realmrelay.GETXmlParse;
@@ -41,6 +42,7 @@ public abstract class Packet implements IData {
 		list.add(ClientStatPacket.class);
 		list.add(Create_SuccessPacket.class);
 		list.add(CreateGuildPacket.class);
+		list.add(CreateGuildResultPacket.class);
 		list.add(CreatePacket.class);
 		list.add(DamagePacket.class);
 		list.add(DeathPacket.class);
@@ -48,6 +50,7 @@ public abstract class Packet implements IData {
 		list.add(EnemyHitPacket.class);
 		list.add(EscapePacket.class);
 		list.add(FailurePacket.class);
+		list.add(FilePacket.class);
 		list.add(Global_NotificationPacket.class);
 		list.add(GoToAckPacket.class);
 		list.add(GoToPacket.class);
@@ -98,8 +101,15 @@ public abstract class Packet implements IData {
 		try {
 			for (Class<? extends Packet> packetClass: list) {
 				Packet packet = packetClass.newInstance();
-				ROTMGRelay.echo("Mapping " + packet.getName() + " -> " + packet.id());
+				ROTMGRelay.echo("Mapping: " + packet.getName() + " -> " + packet.id());
 				packetIdtoClassMap.set(packet.id(), packetClass);
+			}
+			for (Entry<String, Integer> entry: GETXmlParse.packetMap.entrySet()) {
+				byte id = entry.getValue().byteValue();
+				Packet packet = Packet.create(id);
+				if (packet instanceof UnknownPacket) {
+					ROTMGRelay.echo("Not mapped: " + entry.getKey() + " -> " + id);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
