@@ -3,7 +3,6 @@ package realmrelay;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -82,7 +81,8 @@ public class GETXmlParse {
 			DOMSource source = new DOMSource(doc);
 			StreamResult result = new StreamResult(file);
 			transformer.transform(source, result);
-		} catch (ConnectException e) {
+		} catch (Exception e) {
+			ROTMGRelay.echo("Unable to get latest xml data, using local cache...");
 			try {
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -96,8 +96,6 @@ public class GETXmlParse {
 				e1.printStackTrace();
 				throw new RuntimeException("cannot load local file: " + file.getName());
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
