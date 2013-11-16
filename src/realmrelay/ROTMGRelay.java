@@ -178,12 +178,9 @@ public final class ROTMGRelay {
 													}
 													byte packetId = user.remoteBuffer[4];
 													byte[] packetBytes = new byte[packetLength - 5];
-													for (int index = 0; index < packetBytes.length; index++) {
-														packetBytes[index] = user.remoteBuffer[index + 5];
-													}
-													for (int index = packetLength; index < user.remoteBufferIndex; index++) {
-														user.remoteBuffer[index - packetLength] = user.remoteBuffer[index];
-													}
+													System.arraycopy(user.remoteBuffer, 5, packetBytes, 0, packetLength - 5);
+													if (user.remoteBufferIndex > packetLength)
+														System.arraycopy(user.remoteBuffer, packetLength, user.remoteBuffer, 0, user.remoteBufferIndex - packetLength);
 													user.remoteBufferIndex -= packetLength;
 													user.remoteRecvRC4.cipher(packetBytes);
 													Packet packet = Packet.create(packetId, packetBytes);
@@ -222,12 +219,9 @@ public final class ROTMGRelay {
 											}
 											byte packetId = user.localBuffer[4];
 											byte[] packetBytes = new byte[packetLength - 5];
-											for (int index = 0; index < packetBytes.length; index++) {
-												packetBytes[index] = user.localBuffer[index + 5];
-											}
-											for (int index = packetLength; index < user.localBufferIndex; index++) {
-												user.localBuffer[index - packetLength] = user.localBuffer[index];
-											}
+											System.arraycopy(user.localBuffer, 5, packetBytes, 0, packetLength - 5);
+											if (user.localBufferIndex > packetLength)
+												System.arraycopy(user.localBuffer, packetLength, user.localBuffer, 0, user.localBufferIndex - packetLength);
 											user.localBufferIndex -= packetLength;
 											user.localRecvRC4.cipher(packetBytes);
 											Packet packet = Packet.create(packetId, packetBytes);
