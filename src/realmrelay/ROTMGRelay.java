@@ -174,7 +174,7 @@ public final class ROTMGRelay {
 												user.remoteBufferIndex += bytesRead;
 												while (user.remoteBufferIndex >= 5) {
 													int packetLength = ((ByteBuffer) ByteBuffer.allocate(4).put(user.remoteBuffer[0]).put(user.remoteBuffer[1]).put(user.remoteBuffer[2]).put(user.remoteBuffer[3]).rewind()).getInt();
-													ROTMGRelay.echo("Server Packet: " + user.remoteBufferIndex + " / " + packetLength);
+													//ROTMGRelay.echo("Server Packet: " + user.remoteBufferIndex + " / " + packetLength);
 													// check to see if packet length is bigger than buffer size
 													if (user.remoteBuffer.length < packetLength)
 													{      // resize buffer to match packet length
